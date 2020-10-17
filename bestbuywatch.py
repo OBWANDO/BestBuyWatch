@@ -63,6 +63,12 @@ def monitorCards(searchstr, api_key, showvar, skus, avails):
     if data is None: 
         return
     
+    if data['errorCode'] != '400':
+        avmsg = (':ERROR: ' + data['errorCode'] + " :: " + data['errorMessage'])
+        logging.info(avmsg)
+        print ('\n' + gettimeformat() + avmsg)
+        return
+
     if 'products' not in data: 
         return
     
@@ -105,12 +111,12 @@ def main():
 
     #what we need to check if true or not
     avails = ['onlineAvailability', 'inStorePickup', 'inStoreAvailability']
-    
+
     # you can only use 6 SKUs per request
     skus = '6432447, 6429434, 6436192'
     
     while (1):
-        monitorCards(searchstr, api_key, showvar, skus)
+        monitorCards(searchstr, api_key, showvar, skus, avails)
         sleep(3) # This is how long it will wait in between requests. You have a daily limit of 50k, so going under 2 sec isnt advised
         loopcount = loopcount - 1
         if loopcount < 1:
