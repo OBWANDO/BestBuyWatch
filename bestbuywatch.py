@@ -62,9 +62,13 @@ def monitorCards(searchstr, api_key, showvar, skus, avails):
     
     if data is None: 
         return
-    
-    if data['errorCode'] != '400':
-        avmsg = (':ERROR: ' + data['errorCode'] + " :: " + data['errorMessage'])
+        
+    if 'errorCode' in data:
+        errMsg = "unknown"
+        if 'errorMessage' in data:
+            errMsg = data['errorMessage']
+        
+        avmsg = (':ERROR: ' + data['errorCode'] + " :: " + errMsg)
         logging.info(avmsg)
         print ('\n' + gettimeformat() + avmsg)
         return
